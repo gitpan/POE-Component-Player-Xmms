@@ -1,4 +1,8 @@
-Revision history for POE component Player::Xmms .
+Revision history for POE component Player::Xmms
+
+0.02  Wed Oct 20 13:37:41 2004
+	- removed extra sub
+	- prettied up the docs
 
 0.01  Fri Sep 10 11:04:32 2004
 	- original version

@@ -7,7 +7,7 @@ use POE qw(Wheel::Run);
 use Xmms;
 use Xmms::Remote;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 @POE::Component::Player::Xmms::ISA = ("Xmms::Remote");
 
@@ -65,7 +65,6 @@ sub spawn {
 				'quit',
 				'get_playlist_pos',
 				'set_playlist_pos',
-				'jump_to_time',
 				'get_playlist_files',
 				'get_version',
 				'is_running',
@@ -83,8 +82,8 @@ sub spawn {
 				'playlist_delete',
 				'playlist_add',
 				'playlist_add_url',
-				'jump_to_timestr',
 				'jump_to_time',
+				'jump_to_timestr',
 				'get_playlist_timestr',
 				'is_main_win',
 				'is_pl_win',
@@ -293,12 +292,6 @@ sub set_playlist_pos {
 	return $r;
 }
 
-sub jump_to_time {
-	my $r = $_[OBJECT]->SUPER::jump_to_time(splice(@_,ARG0));
-	Xmms::sleep(0.25);
-	return $r;
-}
-
 sub get_playlist_files {
 	return $_[OBJECT]->SUPER::get_playlist_files(splice(@_,ARG0));
 }
@@ -472,17 +465,20 @@ POE::Component::Player::Xmms - a wrapper for the C<Xmms> player
 
 =head1 DESCRIPTION
 
-This component is used to manipulate the C<Xmms> player from within a POE application.
+This component is used to manipulate the C<Xmms> player from within a 
+POE application.
 
 =head1 METHODS
 
 =head2 spawn
 
-Used to initialise the system and create a module instance.  The optional hash reference may contain any of the following keys:
+Used to initialise the system and create a module instance. 
+The optional hash reference may contain any of the following keys:
 
 =item alias
 
-Indicates the name of a session to which events will be posted.  Default: C<main>.
+Indicates the name of a session to which events will be posted.  
+Default: C<main>.
 
 =item xargs
 
@@ -494,71 +490,74 @@ Allows for passing extra arguments to the underlying application.
 =head2 Xmms::Remote events
 
 The methods available to Xmms::Remote are dupicated as events, heres the list:
-playlist_clear,
-playlist,
-play,
-get_playlist_length,
-get_volume,
-set_main_volume,
-get_main_volume,
-is_repeat,
-is_shuffle,
-get_info,
-get_playlist_file,
-get_playlist_time,
-set_volume,
-get_balance,
-get_balancestr,
-set_balance,
-get_skin,
-toggle_aot,
-main_win_toggle,
-pl_win_toggle,
-eq_win_toggle,
-prefs_win_toggle,
-get_output_time,
-get_output_timestr,
-stop,
-is_playing,
-quit,
-get_playlist_pos,
-set_playlist_pos,
-jump_to_time,
-get_playlist_files,
-get_version,
-is_running,
-show_prefs_box,
-set_skin,
-all_win_toggle,
-get_playlist_titles,
-get_playlist_title,
-eject,
-playlist_next,
-playlist_prev,
-pause,
-toggle_shuffle,
-toggle_repeat,
-playlist_delete,
-playlist_add,
-playlist_add_url,
-jump_to_timestr,
-jump_to_time,
-get_playlist_timestr,
-is_main_win,
-is_pl_win,
-is_eq_win,
-get_eq,
-set_eq,
-get_eq_preamp,
-set_eq_preamp,
-get_eq_band,
-set_eq_band
 
-For now, just $kernel->call these to get the return values.  I will document these and add event replys for everything later.
+	playlist_clear,
+	playlist,
+	play,
+	get_playlist_length,
+	get_volume,
+	set_main_volume,
+	get_main_volume,
+	is_repeat,
+	is_shuffle,
+	get_info,
+	get_playlist_file,
+	get_playlist_time,
+	set_volume,
+	get_balance,
+	get_balancestr,
+	set_balance,
+	get_skin,
+	toggle_aot,
+	main_win_toggle,
+	pl_win_toggle,
+	eq_win_toggle,
+	prefs_win_toggle,
+	get_output_time,
+	get_output_timestr,
+	stop,
+	is_playing,
+	quit,
+	get_playlist_pos,
+	set_playlist_pos,
+	get_playlist_files,
+	get_version,
+	is_running,
+	show_prefs_box,
+	set_skin,
+	all_win_toggle,
+	get_playlist_titles,
+	get_playlist_title,
+	eject,
+	playlist_next,
+	playlist_prev,
+	pause,
+	toggle_shuffle,
+	toggle_repeat,
+	playlist_delete,
+	playlist_add,
+	playlist_add_url,
+	jump_to_timestr,
+	jump_to_time,
+	get_playlist_timestr,
+	is_main_win,
+	is_pl_win,
+	is_eq_win,
+	get_eq,
+	set_eq,
+	get_eq_preamp,
+	set_eq_preamp,
+	get_eq_band,
+	set_eq_band
+
+
+For now, just $kernel->call these to get the return values. 
+I will document these and add event replys for everything later.
 
 =head1 EVENTS
 
-Events are fired at the session from which the I<spawn()> method as called from. Currently there is only one event fired.
+Events are fired at the session from which the I<spawn()> method 
+as called from. Currently there is only one event fired.
 
 =head2 xmms_started
 
@@ -571,6 +570,7 @@ David Davis <xantus@cpan.org>
 =head1 TODO
 
 Better documentation on ALL events
+
 Patches welcome :)
 
 =head1 SEE ALSO
