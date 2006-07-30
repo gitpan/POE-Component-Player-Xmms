@@ -7,7 +7,7 @@ use POE qw(Wheel::Run);
 use Xmms;
 use Xmms::Remote;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 @POE::Component::Player::Xmms::ISA = ("Xmms::Remote");
 
@@ -27,7 +27,8 @@ sub spawn {
 			$self => [
 				# internal
 				'_start',
-			
+		        'signals',
+                
 				# Wheel::Run stuff
 				'xmms_error',
 				'xmms_closed',
@@ -104,15 +105,16 @@ sub spawn {
 sub _start {
 	my ($kernel, $heap, $sender, $self, $args) = @_[KERNEL, HEAP, SENDER, OBJECT, ARG0];
 
-	$kernel->alias_set($args->{alias});
-	$heap->{reply} = $sender->ID;
+    $kernel->alias_set($args->{alias});
+	$kernel->sig(CHLD => 'signals');
+    $heap->{reply} = $sender->ID;
 	$heap->{args} = $args;
 	$heap->{xargs} = $args->{xargs} || '';
 	
 	$kernel->post($heap->{reply} => 'xmms_started');
 	
 	return if ($kernel->call($_[SESSION] => 'is_running'));
-	print "spawning\n";
+	#print "spawning\n";
 
 	$heap->{wheel} = POE::Wheel::Run->new(
 		Program     => 'xmms',
@@ -134,6 +136,10 @@ sub _start {
 		StdioDriver	=> POE::Driver::SysRW->new(),
 	);
 	
+}
+
+sub signals {
+    return 0;
 }
 
 sub xmms_error {
@@ -458,7 +464,7 @@ POE::Component::Player::Xmms - a wrapper for the C<Xmms> player
 
 	use POE qw(Component::Player::Xmms);
 
-	POE::Component::Player::Xmms->new({ alias => 'xmms' });
+	POE::Component::Player::Xmms->spawn({ alias => 'xmms' });
 	$kernel->post(xmms => play => 'test.mp3');
 
 	POE::Kernel->run();

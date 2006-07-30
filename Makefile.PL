@@ -5,10 +5,12 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
 	NAME			=> 'POE::Component::Player::Xmms',
-	VERSION_FROM	=> 'Xmms.pm', 
+	AUTHOR          => 'David Davis <xantus@cpan.org>',
+    ABSTRACT        => 'Non-blocking POE interface to Xmms music player',
+	VERSION_FROM	=> 'Xmms.pm',
 	AUTHOR			=> 'David Davis <xantus@cpan.org>',
-#	ABSTRACT_FROM	=> 'Xmms.pm',
 	PREREQ_PM		=> {
-		Xmms => '0.12'
-		},
-	);
+        POE => 0.32,
+	    Xmms => 0.12,
+    },
+);

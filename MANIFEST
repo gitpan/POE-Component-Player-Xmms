@@ -3,4 +3,5 @@ Changes
 Makefile.PL
 MANIFEST
 README
-test.pl
+t/00_play.t
+META.yml                                 Module meta-data (added by MakeMaker)

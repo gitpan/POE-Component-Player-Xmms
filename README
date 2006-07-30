@@ -4,7 +4,7 @@ NAME
 SYNOPSIS
             use POE qw(Component::Player::Xmms);
 
-            POE::Component::Player::Xmms->new({ alias => 'xmms' });
+            POE::Component::Player::Xmms->spawn({ alias => 'xmms' });
             $kernel->post(xmms => play => 'test.mp3');
 
             POE::Kernel->run();
