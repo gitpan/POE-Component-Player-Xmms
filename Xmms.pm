@@ -7,7 +7,7 @@ use POE qw(Wheel::Run);
 use Xmms;
 use Xmms::Remote;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 @POE::Component::Player::Xmms::ISA = ("Xmms::Remote");
 
